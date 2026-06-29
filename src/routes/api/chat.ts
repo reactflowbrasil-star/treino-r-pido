@@ -61,10 +61,11 @@ export const Route = createFileRoute("/api/chat")({
           const gateway = createLovableAiGatewayProvider(LOVABLE_API_KEY);
           const model = gateway("google/gemini-3-flash-preview");
 
+          const modelMessages = await convertToModelMessages(messages);
           const result = streamText({
             model,
             system: WHATSCOACH_SYSTEM_PROMPT,
-            messages: convertToModelMessages(messages),
+            messages: modelMessages,
             onError: ({ error }) => {
               console.error("[chat] streamText error", error);
             },

@@ -26,7 +26,9 @@ export const Route = createFileRoute("/api/chat")({
           }
 
           const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-            global: { headers: { Authorization: `Bearer ${token}`, apikey: SUPABASE_PUBLISHABLE_KEY } },
+            global: {
+              headers: { Authorization: `Bearer ${token}`, apikey: SUPABASE_PUBLISHABLE_KEY },
+            },
             auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
           });
 

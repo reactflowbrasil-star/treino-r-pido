@@ -21,7 +21,13 @@ export const Route = createFileRoute("/_authenticated/chat")({
 
 type Loaded = { id: string; role: string; content: string };
 
-const QUICK_REPLIES = ["Treinei hoje 💪", "Não treinei", "Mais leve", "Aumenta a carga", "Trocar exercício"];
+const QUICK_REPLIES = [
+  "Treinei hoje 💪",
+  "Não treinei",
+  "Mais leve",
+  "Aumenta a carga",
+  "Trocar exercício",
+];
 
 function ChatPage() {
   const navigate = useNavigate();
@@ -146,11 +152,20 @@ function ChatWindow({
   return (
     <div className="flex h-[100dvh] flex-col bg-chat-bg">
       <header className="flex items-center gap-3 border-b border-border/60 bg-surface/80 px-3 py-3 backdrop-blur">
-        <Link to="/" className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+        <Link
+          to="/"
+          className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+        >
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div className="relative">
-          <img src={coachAvatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
+          <img
+            src={coachAvatar}
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-full object-cover"
+          />
           <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-whatsapp border-2 border-surface" />
         </div>
         <div className="flex-1 min-w-0">
@@ -206,7 +221,12 @@ function ChatWindow({
         </div>
       )}
 
-      <Composer input={input} setInput={setInput} onSubmit={() => handleSubmit()} disabled={isLoading} />
+      <Composer
+        input={input}
+        setInput={setInput}
+        onSubmit={() => handleSubmit()}
+        disabled={isLoading}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { ArrowLeft, LogOut, RotateCcw, Send } from "lucide-react";
+import { ArrowLeft, LogOut, RotateCcw, Send, Dumbbell } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/chat")({
 
 type Loaded = { id: string; role: string; content: string };
 
+const QUICK_REPLIES = ["Treinei hoje 💪", "Não treinei", "Mais leve", "Aumenta a carga", "Trocar exercício"];
+
 function ChatPage() {
   const navigate = useNavigate();
   const loadFn = useServerFn(loadCoachMessages);
@@ -29,7 +31,6 @@ function ChatPage() {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Load history once
   useEffect(() => {
     loadFn()
       .then((rows: Loaded[]) => {
@@ -54,7 +55,7 @@ function ChatPage() {
           const { data } = await supabase.auth.getSession();
           const token = data.session?.access_token;
           const headers = new Headers(init?.headers);
-          if (token) headers.set("Authorization", `Bearer ${token}`);
+          if (token) headers.set("Authorization", \`Bearer \${token}\`);
           return fetch(input as RequestInfo, { ...init, headers });
         },
       }),
@@ -63,8 +64,11 @@ function ChatPage() {
 
   if (initial === null) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-chat-bg text-muted-foreground">
-        Carregando seu coach...
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 bg-chat-bg text-muted-foreground">
+        <div className="grid h-14 w-14 animate-pulse place-items-center rounded-2xl bg-gradient-primary shadow-glow">
+          <Dumbbell className="h-7 w-7 text-primary-foreground" />
+        </div>
+        <span className="text-sm">Carregando seu coach...</span>
       </div>
     );
   }
@@ -120,7 +124,6 @@ function ChatWindow({
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, status, scrollRef]);
 
-  // Seed first message from coach if conversation is empty
   useEffect(() => {
     if (messages.length === 0 && !isLoading) {
       sendMessage({ text: "Oi! Acabei de chegar. Bora começar?" });
@@ -128,8 +131,8 @@ function ChatWindow({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSubmit = async () => {
-    const text = input.trim();
+  const handleSubmit = async (overrideText?: string) => {
+    const text = (overrideText ?? input).trim();
     if (!text || isLoading) return;
     setInput("");
     await sendMessage({ text });
@@ -143,27 +146,30 @@ function ChatWindow({
   return (
     <div className="flex h-[100dvh] flex-col bg-chat-bg">
       <header className="flex items-center gap-3 border-b border-border/60 bg-surface/80 px-3 py-3 backdrop-blur">
-        <Link to="/" className="text-muted-foreground hover:text-foreground">
+        <Link to="/" className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <img src={coachAvatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full" />
+        <div className="relative">
+          <img src={coachAvatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
+          <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-whatsapp border-2 border-surface" />
+        </div>
         <div className="flex-1 min-w-0">
-          <div className="truncate text-sm font-semibold">WhatsCoach</div>
+          <div className="truncate text-sm font-semibold">WhatsCoach 🏋️</div>
           <div className="flex items-center gap-1.5 text-xs text-whatsapp">
-            <span className="h-1.5 w-1.5 rounded-full bg-whatsapp" /> online
+            {isLoading ? "digitando..." : "online"}
           </div>
         </div>
         <button
           onClick={onClear}
-          title="Recomeçar"
-          className="rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+          title="Recomeçar conversa"
+          className="rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
         >
           <RotateCcw className="h-4 w-4" />
         </button>
         <button
           onClick={handleSignOut}
           title="Sair"
-          className="rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+          className="rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
         >
           <LogOut className="h-4 w-4" />
         </button>
@@ -173,20 +179,34 @@ function ChatWindow({
         <div className="mx-auto max-w-2xl space-y-2">
           {messages.map((m) => {
             const text = m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
-            return (
-              <MessageBubble key={m.id} role={m.role} text={text} />
-            );
+            return <MessageBubble key={m.id} role={m.role} text={text} />;
           })}
           {status === "submitted" && <TypingIndicator />}
           {error && (
-            <div className="text-center text-xs text-destructive">
+            <div className="mx-auto mt-2 w-fit rounded-full bg-destructive/10 px-3 py-1 text-center text-xs text-destructive">
               {error.message || "Erro de conexão"}
             </div>
           )}
         </div>
       </div>
 
-      <Composer input={input} setInput={setInput} onSubmit={handleSubmit} disabled={isLoading} />
+      {messages.length > 0 && !isLoading && (
+        <div className="border-t border-border/40 bg-surface/40 px-3 py-2">
+          <div className="mx-auto flex max-w-2xl gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {QUICK_REPLIES.map((q) => (
+              <button
+                key={q}
+                onClick={() => handleSubmit(q)}
+                className="shrink-0 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <Composer input={input} setInput={setInput} onSubmit={() => handleSubmit()} disabled={isLoading} />
     </div>
   );
 }
@@ -240,6 +260,13 @@ function Composer({
     ref.current?.focus();
   }, []);
 
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = Math.min(ref.current.scrollHeight, 128) + "px";
+    }
+  }, [input]);
+
   return (
     <div className="border-t border-border/60 bg-surface/80 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur">
       <div className="mx-auto flex max-w-2xl items-end gap-2">
@@ -261,7 +288,7 @@ function Composer({
           onClick={onSubmit}
           disabled={disabled || !input.trim()}
           size="icon"
-          className="h-11 w-11 shrink-0 rounded-full bg-whatsapp text-whatsapp-foreground hover:bg-whatsapp/90"
+          className="h-11 w-11 shrink-0 rounded-full bg-whatsapp text-whatsapp-foreground hover:bg-whatsapp/90 transition-transform active:scale-90 disabled:opacity-50"
         >
           <Send className="h-5 w-5" />
         </Button>

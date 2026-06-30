@@ -5,7 +5,7 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dumbbell, Loader2 } from "lucide-react";
+import { Dumbbell, Loader2, Eye, EyeOff, Check } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -18,6 +18,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+const PERKS = ["Treino personalizado", "Acompanhamento diário", "Cancele quando quiser"];
+
 function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -25,6 +27,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -77,17 +80,23 @@ function AuthPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-hero">
-      <header className="px-4 py-4">
+    <main className="relative flex min-h-screen flex-col overflow-hidden bg-gradient-hero">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
+        <div className="absolute -right-10 bottom-10 h-80 w-80 rounded-full bg-accent/15 blur-3xl" />
+      </div>
+
+      <header className="relative px-4 py-4">
         <Link to="/" className="inline-flex items-center gap-2 font-display font-bold">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-primary">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-primary shadow-glow">
             <Dumbbell className="h-4 w-4 text-primary-foreground" />
           </span>
           WhatsCoach
         </Link>
       </header>
-      <div className="flex flex-1 items-center justify-center px-4 py-8">
-        <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-7 shadow-card">
+
+      <div className="relative flex flex-1 items-center justify-center px-4 py-8">
+        <div className="w-full max-w-sm rounded-3xl border border-border bg-card/80 p-7 shadow-card backdrop-blur-xl">
           <h1 className="font-display text-2xl font-bold">
             {mode === "signin" ? "Bem-vindo de volta" : "Bora começar 💪"}
           </h1>
@@ -97,11 +106,21 @@ function AuthPage() {
               : "Cria sua conta e fala com o coach agora."}
           </p>
 
+          {mode === "signup" && (
+            <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1.5">
+              {PERKS.map((p) => (
+                <span key={p} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Check className="h-3.5 w-3.5 text-whatsapp" /> {p}
+                </span>
+              ))}
+            </div>
+          )}
+
           <Button
             onClick={handleGoogle}
             disabled={loading}
             variant="outline"
-            className="mt-6 h-11 w-full border-border bg-surface/60"
+            className="mt-6 h-11 w-full border-border bg-surface/60 hover:bg-surface"
           >
             <GoogleIcon /> Continuar com Google
           </Button>
@@ -137,16 +156,27 @@ function AuthPage() {
             </div>
             <div>
               <Label htmlFor="password">Senha</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="mt-1"
-              />
+              <div className="relative mt-1">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((s) => !s)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
             <Button
               type="submit"
@@ -161,7 +191,7 @@ function AuthPage() {
           <button
             type="button"
             onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="mt-5 w-full text-center text-sm text-muted-foreground hover:text-foreground"
+            className="mt-5 w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             {mode === "signin" ? "Não tem conta? Criar agora" : "Já tem conta? Entrar"}
           </button>

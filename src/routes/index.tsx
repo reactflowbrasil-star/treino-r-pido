@@ -107,7 +107,7 @@ function Header() {
   }, []);
 
   return (
-    <header className={\`sticky top-0 z-50 border-b transition-all duration-300 \${scrolled ? "border-border/60 bg-background/95 backdrop-blur-xl shadow-card" : "border-transparent bg-transparent"}\`}>
+    <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${scrolled ? "border-border/60 bg-background/95 backdrop-blur-xl shadow-card" : "border-transparent bg-transparent"}`}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary shadow-glow">
@@ -275,7 +275,7 @@ function HowItWorks() {
       <div className="mt-14 grid gap-5 md:grid-cols-3">
         {steps.map((s, i) => (
           <div key={s.title} className="group relative rounded-2xl border border-border bg-card p-7 shadow-card transition-all hover:border-primary/30 hover:shadow-glow">
-            <div className={\`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl \${s.color}\`}>
+            <div className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl ${s.color}`}>
               <s.icon className="h-6 w-6" />
             </div>
             <div className="absolute -top-3 right-6 grid h-7 w-7 place-items-center rounded-full bg-gradient-primary text-xs font-bold text-primary-foreground">
@@ -315,7 +315,7 @@ function Benefits() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <div key={item.title} className="rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/20 hover:shadow-card">
-              <div className={\`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-surface \${item.color}\`}>
+              <div className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-surface ${item.color}`}>
                 <item.icon className="h-5 w-5" />
               </div>
               <h3 className="font-display text-base font-semibold">{item.title}</h3>
@@ -416,7 +416,7 @@ function Testimonials() {
               </div>
               <p className="flex-1 text-sm text-muted-foreground leading-relaxed italic">&ldquo;{t.text}&rdquo;</p>
               <div className="mt-5 flex items-center gap-3 pt-5 border-t border-border/40">
-                <div className={\`grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br \${t.color} text-sm font-bold text-white\`}>
+                <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br ${t.color} text-sm font-bold text-white`}>
                   {t.avatar}
                 </div>
                 <div>
@@ -594,7 +594,7 @@ function FAQ() {
         {faqs.map((f, i) => (
           <AccordionItem
             key={i}
-            value={\`q\${i}\`}
+            value={`q${i}`}
             className="rounded-xl border border-border bg-card px-4"
           >
             <AccordionTrigger className="text-left font-medium py-4 hover:no-underline">

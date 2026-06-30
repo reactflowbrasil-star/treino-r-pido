@@ -1,9 +1,19 @@
 # Deploy na Netlify
 
 Este projeto é um app **TanStack Start** (SSR via Nitro). O preset padrão do
-`@lovable.dev/vite-tanstack-config` é o Cloudflare, por isso o `netlify.toml`
-deste repositório força o preset **netlify**, que gera as Netlify Functions e os
-assets estáticos automaticamente.
+`@lovable.dev/vite-tanstack-config` é o Cloudflare, por isso o `vite.config.ts`
+deste repositório define o preset **netlify** em código:
+
+```ts
+export default defineConfig({
+  nitro: { preset: "netlify" },
+  // ...
+});
+```
+
+> Importante: a variável de ambiente `SERVER_PRESET` **não** é lida por este
+> config, por isso o preset precisa ficar no `vite.config.ts`. O preset netlify
+> gera a Netlify Function de SSR e os assets estáticos em `dist/`.
 
 ## 1. Conectar o repositório
 
@@ -29,8 +39,6 @@ adicione as variáveis listadas em `.env.example`:
 > As variáveis com prefixo `VITE_` são expostas no bundle do cliente; as demais
 > ficam apenas no servidor. Use os valores do seu projeto Supabase.
 
-O `netlify.toml` já define `SERVER_PRESET=netlify` e `NODE_VERSION=20`.
-
 ## 3. Deploy
 
 Clique em **Deploy site**. A cada push na branch `main`, a Netlify refaz o build
@@ -40,7 +48,8 @@ e publica automaticamente.
 
 ```bash
 bun install
-SERVER_PRESET=netlify bun run build
+bun run build
 ```
 
-O resultado fica em `dist/` (assets) com as funções serverless geradas pelo Nitro.
+O resultado fica em `dist/` (assets) com a função serverless de SSR gerada
+pelo preset netlify do Nitro.

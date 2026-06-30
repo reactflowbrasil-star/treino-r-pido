@@ -1,0 +1,20 @@
+# Configuração de deploy na Netlify
+# Projeto: WhatsCoach (TanStack Start + Nitro)
+#
+# Como o app usa SSR via Nitro (o preset padrão do @lovable.dev/vite-tanstack-config
+# é o Cloudflare), aqui forçamos o preset "netlify" para gerar funções serverless
+# e os assets estáticos compatíveis com a Netlify.
+
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+[build.environment]
+  # Faz o Nitro buildar para a Netlify (gera as Netlify Functions automaticamente)
+  SERVER_PRESET = "netlify"
+  NODE_VERSION = "20"
+
+# As variáveis de ambiente sensíveis (Supabase, AI Gateway, etc.)
+# devem ser configuradas no painel da Netlify em:
+#   Site settings > Build & deploy > Environment > Environment variables
+# Veja o arquivo .env.example para a lista completa.

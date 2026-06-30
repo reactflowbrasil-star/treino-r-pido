@@ -86,13 +86,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Treino personalizado, acompanhamento diário e resultado real. Seu personal trainer com IA direto no WhatsApp. Comece em 2 minutos.",
       },
-      { property: "og:title", content: "WhatsCoach — Personal trainer no WhatsApp" },
+      { property: "og:title", content: "WhatsCoach — Personal trainer no WhatsApp por R$47/mês" },
       {
         property: "og:description",
         content: "Treino simples, todo dia, sem desculpa. R$47/mês.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "WhatsCoach — Personal trainer no WhatsApp por R$47/mês" },
+      { name: "description", content: "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp." },
+      { property: "og:description", content: "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp." },
+      { name: "twitter:description", content: "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dfeba9f7-6fcd-4144-a811-b9a5c92b3842/id-preview-191bc075--66c0c4c1-3a89-4b66-a136-b73a58aac43c.lovable.app-1782781532898.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dfeba9f7-6fcd-4144-a811-b9a5c92b3842/id-preview-191bc075--66c0c4c1-3a89-4b66-a136-b73a58aac43c.lovable.app-1782781532898.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

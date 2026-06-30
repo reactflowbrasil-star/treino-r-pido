@@ -20,9 +20,7 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          A página que você procura não existe.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">A página que você procura não existe.</p>
         <div className="mt-6">
           <Link
             to="/"
@@ -46,12 +44,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Algo deu errado
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Tenta de novo ou volta pra home.
-        </p>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">Algo deu errado</h1>
+        <p className="mt-2 text-sm text-muted-foreground">Tenta de novo ou volta pra home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -94,11 +88,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "WhatsCoach — Personal trainer no WhatsApp por R$47/mês" },
-      { name: "description", content: "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp." },
-      { property: "og:description", content: "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp." },
-      { name: "twitter:description", content: "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dfeba9f7-6fcd-4144-a811-b9a5c92b3842/id-preview-191bc075--66c0c4c1-3a89-4b66-a136-b73a58aac43c.lovable.app-1782781532898.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dfeba9f7-6fcd-4144-a811-b9a5c92b3842/id-preview-191bc075--66c0c4c1-3a89-4b66-a136-b73a58aac43c.lovable.app-1782781532898.png" },
+      {
+        name: "description",
+        content:
+          "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp.",
+      },
+      {
+        property: "og:description",
+        content:
+          "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "WhatsCoach is an AI-powered personal trainer delivering personalized workouts and daily guidance via WhatsApp.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dfeba9f7-6fcd-4144-a811-b9a5c92b3842/id-preview-191bc075--66c0c4c1-3a89-4b66-a136-b73a58aac43c.lovable.app-1782781532898.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dfeba9f7-6fcd-4144-a811-b9a5c92b3842/id-preview-191bc075--66c0c4c1-3a89-4b66-a136-b73a58aac43c.lovable.app-1782781532898.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

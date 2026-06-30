@@ -52,7 +52,12 @@
   --shadow-glow: 0 0 40px -8px oklch(0.72 0.21 45 / 0.55);
   --shadow-card: 0 8px 30px -10px oklch(0.05 0.04 270 / 0.55);
 
-  --gradient-hero: linear-gradient(135deg, oklch(0.18 0.08 280) 0%, oklch(0.12 0.06 265) 60%, oklch(0.08 0.04 260) 100%);
+  --gradient-hero: linear-gradient(
+    135deg,
+    oklch(0.18 0.08 280) 0%,
+    oklch(0.12 0.06 265) 60%,
+    oklch(0.08 0.04 260) 100%
+  );
   --gradient-primary: linear-gradient(135deg, oklch(0.72 0.21 45) 0%, oklch(0.66 0.23 28) 100%);
 }
 
@@ -112,14 +117,18 @@
     border-color: var(--color-border);
   }
 
-  html, body {
+  html,
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
@@ -143,7 +152,6 @@
 @utility shadow-glow {
   box-shadow: var(--shadow-glow);
 }
-
 
 /* ============================================
  * Melhorias de UI/UX — animações e polish
@@ -204,7 +212,8 @@ html {
 
 /* Brilho pulsante para CTAs */
 @keyframes glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 30px -8px oklch(0.72 0.21 45 / 0.45);
   }
   50% {
